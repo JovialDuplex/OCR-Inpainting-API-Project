@@ -89,6 +89,12 @@ class OCRDetection:
         return output_data
 
 if __name__ == "__main__":
-    ocr = OCRDetection()
-    data = ocr.detection("image1.jpg")
-    print(data)
+    
+    model = hf_hub_download(repo_id="mayocream/lama-manga-onnx", filename="lama-manga.onnx")
+    
+    inpaint = LamaInpainting(model_path=model)
+    image = cv2.imread("image.png", cv2.IMREAD_COLOR_RGB)
+    mask = cv2.imread("mask.png", cv2.IMREAD_GRAYSCALE)
+
+    result = inpaint.inpaint(image, mask)
+    result.save("result.png")
